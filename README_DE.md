@@ -10,21 +10,28 @@ Bondrucker auszugeben.
 
 ## Installation
 
-Voraussetzungen: ein Thermodrucker-Server, der PNG-Daten per WebSocket
-annimmt, mit `ok` antwortet und im Netzwerk deines Computers erreichbar
-ist.
-
-In `sketch.js` `printerConnection` auf die Adresse des Servers setzen
-(Standard `ws://10.21.3.49:8080`).
+Voraussetzungen: ein Browser im selben Netzwerk wie der Pi (siehe Server).
 
 Bibliotheken (in `libraries/`): p5.js 1.10.0, p5.sound 1.0.1 (eingebunden,
 nicht verwendet).
 
 Lizenz: MIT
 
+## Server
+
+Braucht `printer-websockets` aus
+[Servers_RaspberriPi](https://github.com/ZHdK-Critical-Coding/Servers_RaspberriPi),
+auf einem Raspberry Pi mit einem ESC/POS-Thermodrucker an USB, Port 8080.
+Nach `npm install` (für den `escpos-usb`-Fix siehe dessen readme) zuerst
+mit `bash run.sh` im Ordner auf dem Pi starten; er druckt seine Adresse.
+Er nimmt ein PNG als Binärdaten und den String `cut` an und antwortet mit
+`ok` (oder `busy`, solange gedruckt wird). Seine Adresse oben in
+`sketch.js` bei `printerConnection` eintragen (Standard
+`ws://10.21.3.49:8080`).
+
 ## Ausführen
 
-1. Sicherstellen, dass der Drucker-Server läuft.
+1. Sicherstellen, dass der Drucker-Server läuft (siehe Server).
 2. Den Ordner in Visual Studio Code öffnen und Live Server starten (in der
    Statusleiste auf **Go Live** klicken).
 3. Auf die Zeichenfläche klicken, um den nächsten Frame zu drucken.

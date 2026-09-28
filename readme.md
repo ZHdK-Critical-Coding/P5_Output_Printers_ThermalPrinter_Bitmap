@@ -9,19 +9,26 @@ printing your own p5 drawings on a receipt printer.
 
 ## Installation
 
-Requirements: a thermal printer server that accepts PNG data over
-WebSocket and answers with `ok`, reachable from your computer's network.
-
-Set `printerConnection` in `sketch.js` to the server address (default
-`ws://10.21.3.49:8080`).
+Requirements: a browser on the same network as the Pi (see Server).
 
 Libraries (in `libraries/`): p5.js 1.10.0, p5.sound 1.0.1 (included, not used).
 
 License: MIT
 
+## Server
+
+Needs `printer-websockets` from
+[Servers_RaspberriPi](https://github.com/ZHdK-Critical-Coding/Servers_RaspberriPi),
+running on a Raspberry Pi with an ESC/POS thermal printer on USB, port
+8080. After `npm install` (see its readme for the `escpos-usb` fix), start
+it first with `bash run.sh` in the folder on the Pi; it prints its address.
+It takes a PNG as binary and the string `cut`, and answers `ok` (or `busy`
+while printing). Put its address in `printerConnection` at the top of
+`sketch.js` (default `ws://10.21.3.49:8080`).
+
 ## How to Run
 
-1. Make sure the printer server is running.
+1. Make sure the printer server is running (see Server).
 2. Open the folder in Visual Studio Code and start Live Server (click
    **Go Live** in the status bar).
 3. Click on the canvas to print the next frame.
