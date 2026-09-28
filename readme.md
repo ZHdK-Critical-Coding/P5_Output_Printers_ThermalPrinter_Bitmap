@@ -1,37 +1,41 @@
-# Drucker-Frame-Sender mit p5.js
+# P5.js: Thermal Printer Bitmap
 
-Dieses Projekt zeigt, wie man mit **p5.js** Frames eines Canvas an einen **WebSocket-fähigen Drucker** senden kann.  
-Der Benutzer kann durch Mausklicks einzelne Frames an den Drucker senden, optional mit Schneidbefehl.
+[Deutsch](README_DE.md)
 
-## Features
+Draws a square graphic (frame, diagonals, circles and a letter of "ZHDK")
+and sends it as a PNG to a thermal printer server over WebSocket on every
+mouse click. After each print the paper is cut. A starting point for
+printing your own p5 drawings on a receipt printer.
 
-- Verbindung zu einem WebSocket-Drucker herstellen
-- Canvas wird auf dem Bildschirm angezeigt mit:
-  - Rahmen und diagonalen Linien
-  - Mehreren konzentrischen Kreisen
-  - Text aus einer Buchstabenkette (ZHDK)
-- Asynchrones Senden von Canvas-Frames als PNG-Binärdaten
-- Optionaler Schneidbefehl nach jedem Frame
-- Anzeige des Druckerstatus im Browser
+## Installation
 
-## Voraussetzungen
+Requirements: a thermal printer server that accepts PNG data over
+WebSocket and answers with `ok`, reachable from your computer's network.
 
-- Browser mit WebSocket-Unterstützung
-- Ein Drucker oder Server, der WebSocket-Verbindungen akzeptiert und PNG-Binärdaten verarbeitet
+1. Make sure the printer server is running.
+2. Set `printerConnection` in `sketch.js` to the server address (default
+   `ws://10.21.3.49:8080`).
+3. Open the folder in Visual Studio Code and start Live Server (click
+   **Go Live** in the status bar).
+4. Click on the canvas to print the next frame.
 
-## Verwendung
+Libraries (in `libraries/`): p5.js 1.10.0, p5.sound 1.0.1 (included, not used).
 
-- Öffne die HTML-Seite im Browser.
-- Klicke auf das Canvas, um den aktuellen Frame an den Drucker zu senden.
-- Nach jedem Frame kann optional ein Schneidbefehl ausgeführt werden.
-- Der Status des Druckers wird im Canvas angezeigt.
+License: MIT
 
-## Beispiel
+## Coding Help
 
-- 🖤 Schwarze konzentrische Kreise und Text auf weißem Hintergrund
-- ✂️ Optionaler Schneidbefehl nach jedem Frame
-- ⚡ Asynchrones Senden garantiert, dass jede Server-Antwort berücksichtigt wird
-
-## Lizenz
-
-MIT License
+- **`sketch.js` → config at the top**: `printerConnection` is the server
+  address, `printerWidth` the width and height of the canvas in pixels
+  (512). Match it to the print width of your printer.
+- **`sendFrame(cut)`**: converts the canvas to a PNG with `canvas.toBlob()`
+  and sends it as binary data. When the server answers `ok`, it sends `cut`
+  if `cut` is true; any other answer rejects the Promise.
+- **`setup()`**: creates the canvas with `pixelDensity(1)` and
+  `noSmooth()` so one canvas pixel is one printer dot, and opens the
+  WebSocket. The connection status goes to an undeclared `displayState`
+  and is not shown anywhere.
+- **`draw()`**: draws the graphic in black on white. Replace this part with
+  your own drawing – thermal printers only print black and white.
+- **`mousePressed()`**: moves on to the next letter and calls
+  `sendFrame(true)` after 100 ms, so the new letter is already drawn.
