@@ -2,6 +2,7 @@ const printerConnection = 'ws://10.21.3.49:8080' // WebSocket-Adresse des Drucke
 const printerWidth = 512  // Breite/Höhe des Druckbereichs (quadratisches Canvas)
 let socket;                // WebSocket-Objekt
 let printerState = 'not ok' // Statusanzeige der Verbindung
+let statusLabel             // HTML-Element für den Status (unter dem Canvas, wird nicht mitgedruckt)
 let img                     // Reserviert für Bilddaten (derzeit ungenutzt)
 let txt = "ZHDK"            // Text, der auf dem Canvas angezeigt wird
 let count = 0               // Zähler für Buchstabenanzeige
@@ -52,18 +53,22 @@ function setup() {
 
   // Event-Handler: Verbindung erfolgreich
   socket.onopen = () => {
-    displayState = 'Connected to printer'
+    printerState = 'Connected to printer'
   }
 
   // Event-Handler: Fehler
   socket.onerror = () => {
-    displayState = `WebSocket Error`
+    printerState = `WebSocket Error`
   }
 
   // Event-Handler: Verbindung geschlossen
   socket.onclose = () => {
     console.log("Connection closed")
   }
+
+  // Statusanzeige als HTML-Text unter dem Canvas
+  statusLabel = createP(printerState)
+  statusLabel.style('margin', '10px')
 }
 
 // Draw-Funktion: wird kontinuierlich ausgeführt
@@ -86,6 +91,9 @@ function draw() {
   // Text in der unteren linken Ecke
   fill(0,0,0) // Schwarz
   text(txt[count % 4], width * .14, height * .87)
+
+  // Verbindungsstatus anzeigen (ausserhalb des Canvas, damit er nicht gedruckt wird)
+  statusLabel.html(printerState)
 }
 
 // Event: Mausklick
