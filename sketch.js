@@ -1,4 +1,4 @@
-const printerConnection = 'ws://10.21.3.49:8080' // WebSocket-Adresse des Druckers
+const printerConnection = 'ws://localhost:8082' // WebSocket-Adresse des Druckers
 const printerWidth = 512  // Breite/Höhe des Druckbereichs (quadratisches Canvas)
 let socket;                // WebSocket-Objekt
 let printerState = 'not ok' // Statusanzeige der Verbindung
